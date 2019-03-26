@@ -3,7 +3,7 @@
 
 using namespace std;
 
-GenStack::GenStack() //default constructor
+GenStack::GenStack( ) //default constructor
 {
   //initialize variable to default values
   myArray = new char[1];

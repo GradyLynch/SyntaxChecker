@@ -1,61 +1,39 @@
 #include <iostream> //preprocessor directive
 #include <fstream>
 #include "GenStack.h"
+#include "SyntaxChecker.h"
 
 using namespace std;
 
 int main ()
 {
   cout << endl;
-  cout << "Please enter the location of the source code file that you would like to be checked." << endl;
+  cout << "Please enter the name of the source code file that you would like to be checked." << endl;
+  string fileName;
+  getline(cin, fileName);
+  cout << endl;
+
+  SyntaxChecker(fileName);
+
+  cout << endl;
+  cout << "Would you like to check another file (please enter either 'yes' or 'no')." << endl;
   string input;
   getline(cin, input);
   cout << endl;
 
-  string line;
-  int lineNumber = 0;
-  ifstream myfile(input);
-  GenStack mystack(1);
-
-  if (myfile.is_open())
+  // loop for checking multiple files
+  while(input == "yes")
   {
-    while (getline(myfile,line))
-    {
-      lineNumber++;
+    cout << "Please enter the name of the source code file that you would like to be checked." << endl;
+    getline(cin, fileName);
+    cout << endl;
 
-      for(int i = 0; i < line.length(); i++)
-      {
-        if(line[i] == '(' || line[i] == '{' || line[i] == '[')
-        {
-          mystack.push(line[i]);
-          cout << "added " << line[i] << endl;
-        }
-        else if(line[i] == ')' || line[i] == '}' || line[i] == ']')
-        {
-          char close = line[i];
-          char open = mystack.pop();
-          cout << "removed " << open << " and compared to " << close << endl;
-          if(!((close == ')' && open == '(') || (close == '}' && open == '{') || (close == ']' && open == '[')))
-          {
-            cout << "Line " << lineNumber << " expected closure for " << open << " but found " << close << endl;
-            exit(1);
-          }
-        }
-      }
-    }
-    myfile.close();
+    SyntaxChecker(fileName);
 
-    if(!(mystack.isEmpty()))
-    {
-      char x = mystack.pop();
-      if(x == '(')
-        cout << "Reached end of file without )" << endl;
-      else if(x == '{')
-        cout << "Reached end of file without }" << endl;
-      else if(x == '[')
-        cout << "Reached end of file without ]" << endl;
-    }
-    else
-      cout << "good" << endl;
-	}
+    cout << endl;
+    cout << "Would you like to check another file (please enter either 'yes' or 'no')." << endl;
+    getline(cin, input);
+    cout << endl;
+  }
+  cout << "Goodbye" << endl;
 }
